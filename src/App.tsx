@@ -9,8 +9,7 @@ type State = {
   error: Error | null
 }
 
-const API_URL =
-  'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false'
+const API_URL = import.meta.env.VITE_API_URL
 
 export default function App() {
   const [{ coins, pending, error }, setState] = useState<State>({
@@ -20,32 +19,46 @@ export default function App() {
   })
 
   useEffect(() => {
-    async function fetchCoint() {
-      setState((state) => ({ ...state, pending: true }))
+    async function fetchCoin() {
+      setState((prevState) => ({ ...prevState, pending: true }))
       try {
-        const response = await fetch(API_URL)
+        const response = await fetch(
+          `${API_URL}&order=market_cap_desc&per_page=10&page=1&sparkline=false`
+        )
         if (!response.ok) {
-          setState((state) => ({
-            ...state,
-            error: new Error('Failed to fetch data!, Pos1'),
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error(
+              `Failed to fetch: ${response.statusText}`
+            ),
           }))
+          return
         }
         const data = (await response.json()) as Coin[]
-        setState((state) => ({
-          ...state,
+        setState((prevState) => ({
+          ...prevState,
           coins: data,
         }))
-      } catch {
-        setState((state) => ({
-          ...state,
-          error: new Error('Failed to fetch data!, Pos2'),
-        }))
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error(
+              `Failed to fetch data! ${error.message}`
+            ),
+          }))
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error('Unknown error occurred!'),
+          }))
+        }
       } finally {
-        setState((state) => ({ ...state, pending: false }))
+        setState((prevState) => ({ ...prevState, pending: false }))
       }
     }
 
-    fetchCoint()
+    fetchCoin()
   }, [])
 
   return (
