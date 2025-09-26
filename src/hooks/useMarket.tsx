@@ -10,114 +10,101 @@ type State = {
 declare global {
   interface ImportMetaEnv {
     VITE_MARKET_API_URL: string
-    VITE_COIN_API_URL: string
   }
 }
 
-const MARKET_API_URL = import.meta.env.VITE_MARKET_API_URL
-const COIN_API_URL = import.meta.env.VITE_COIN_API_URL
+const API_URL = import.meta.env.VITE_MARKET_API_URL
 
-type Params =
-  | {
-      type: 'multi'
-      filter: string
-      limit: number
-      sortBy: Order
-    }
-  | {
-      type: 'single'
-      id: string
-    }
-
-export function useMarket(params: Params) {
+export default function useMarket({
+  filter,
+  limit,
+  sortBy,
+}: {
+  filter: string
+  limit: number
+  sortBy: Order
+}) {
   const [state, setState] = useState<State>({
     coins: [],
     pending: false,
     error: null,
   })
 
-  const isMulti = params.type === 'multi'
-
-  const processedCoins = isMulti
-    ? state.coins
-        .filter((coin) => {
-          const filter = params.filter.toLowerCase()
+  const filteredCoins = state.coins
+    .filter((coin) => {
+      return (
+        coin.name.toLowerCase().includes(filter.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(filter.toLowerCase())
+      )
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'market_cap_asc':
+          return a.market_cap - b.market_cap
+        case 'market_cap_desc':
+          return b.market_cap - a.market_cap
+        case 'current_price_asc':
+          return a.current_price - b.current_price
+        case 'current_price_desc':
+          return b.current_price - a.current_price
+        case 'price_change_percentage_24h_asc':
           return (
-            coin.name.toLowerCase().includes(filter) ||
-            coin.symbol.toLowerCase().includes(filter)
+            a.price_change_percentage_24h -
+            b.price_change_percentage_24h
           )
-        })
-        .sort((a, b) => {
-          switch (params.sortBy) {
-            case 'market_cap_asc':
-              return a.market_cap - b.market_cap
-            case 'market_cap_desc':
-              return b.market_cap - a.market_cap
-            case 'current_price_asc':
-              return a.current_price - b.current_price
-            case 'current_price_desc':
-              return b.current_price - a.current_price
-            case 'price_change_percentage_24h_asc':
-              return (
-                a.price_change_percentage_24h -
-                b.price_change_percentage_24h
-              )
-            case 'price_change_percentage_24h_desc':
-              return (
-                b.price_change_percentage_24h -
-                a.price_change_percentage_24h
-              )
-            default:
-              return 0
-          }
-        })
-    : state.coins
+        case 'price_change_percentage_24h_desc':
+          return (
+            b.price_change_percentage_24h -
+            a.price_change_percentage_24h
+          )
+        default:
+          throw new Error('This should be impossible!', sortBy)
+      }
+    })
 
   useEffect(() => {
-    async function fetchData() {
-      setState((prev) => ({ ...prev, pending: true, error: null }))
-
+    async function fetchCoins() {
+      setState((prevState) => ({ ...prevState, pending: true }))
       try {
-        const url = isMulti
-          ? `${MARKET_API_URL}&order=market_cap_desc&per_page=${params.limit}&page=1&sparkline=false`
-          : `${COIN_API_URL}/${params.id}`
-
-        const response = await fetch(url)
-
+        const response = await fetch(
+          `${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`
+        )
         if (!response.ok) {
-          throw new Error(
-            `HTTP ${response.status}: ${response.statusText}`
-          )
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error(
+              `Failed to fetch: ${response.statusText}`
+            ),
+          }))
+          return
         }
-
-        const data = (await response.json()) as Coin | Coin[]
-        const coins = Array.isArray(data) ? data : [data]
-
-        setState((prev) => ({
-          ...prev,
+        const data = (await response.json()) as Coin[]
+        setState((prevState) => ({
+          ...prevState,
           pending: false,
-          coins,
+          coins: data,
         }))
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : 'Unknown error occurred'
-        setState((prev) => ({
-          ...prev,
-          pending: false,
-          error: new Error(message),
-        }))
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error(
+              `Failed to fetch data! ${error.message}`
+            ),
+          }))
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            error: new Error('Unknown error occurred!'),
+          }))
+        }
+      } finally {
+        setState((prevState) => ({ ...prevState, pending: false }))
       }
     }
 
-    fetchData()
-  }, [isMulti ? params.limit : undefined])
+    fetchCoins()
+  }, [limit])
 
-  return {
-    pending: state.pending,
-    error: state.error,
-    coins: isMulti ? processedCoins : [],
-    coin: processedCoins[0],
-  }
+  return { ...state, coins: filteredCoins }
 }

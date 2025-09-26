@@ -20,7 +20,7 @@ export default function Header() {
       >
         <img
           style={{ width: '48px', height: '48px' }}
-          src="cryptos.png"
+          src="/cryptos.webp"
           alt="crypto logo"
         />
         <h1 style={{ margin: 0 }}>

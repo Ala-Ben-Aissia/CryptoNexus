@@ -2,7 +2,7 @@ import { useState } from 'react'
 import CoinCard from '@components/CoinCard'
 import LimitSelector from '@components/LimitSelector'
 import FilterInput from '@components/FilterInput'
-import { useMarket } from '../hooks/useMarket'
+import useMarket from '../hooks/useMarket'
 import type { Order, Limit, Filter } from '../types'
 import SortSelector from '@components/SortSelector'
 import CoinCardSkeleton from '@components/CoinCardSkeleton'
@@ -13,7 +13,6 @@ export default function HomePage() {
   const [sortBy, setSortBy] = useState<Order>('market_cap_desc')
 
   const { coins, pending, error } = useMarket({
-    type: 'multi',
     filter,
     limit,
     sortBy,
