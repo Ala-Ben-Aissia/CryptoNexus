@@ -1,5 +1,6 @@
 import Header from '@components/Header'
 import CoinCard from '@components/CoinCard'
+import LimitSelector from '@components/LimitSelector'
 import { useEffect, useState } from 'react'
 import type { Coin } from './types'
 
@@ -17,13 +18,14 @@ export default function App() {
     pending: false,
     error: null,
   })
+  const [limit, setLimit] = useState(10)
 
   useEffect(() => {
     async function fetchCoin() {
       setState((prevState) => ({ ...prevState, pending: true }))
       try {
         const response = await fetch(
-          `${API_URL}&order=market_cap_desc&per_page=10&page=1&sparkline=false`
+          `${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`
         )
         if (!response.ok) {
           setState((prevState) => ({
@@ -59,13 +61,14 @@ export default function App() {
     }
 
     fetchCoin()
-  }, [])
+  }, [limit])
 
   return (
     <div>
       <Header />
       {pending && <pre>Loading...</pre>}
       {error && <pre className="error">{error.message}</pre>}
+      <LimitSelector limit={limit} onLimitChange={setLimit} />
       {!pending && !error && (
         <main className="grid">
           {coins.map((coin) => {
