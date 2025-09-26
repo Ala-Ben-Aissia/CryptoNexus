@@ -1,74 +1,17 @@
 import Header from '@components/Header'
 import CoinCard from '@components/CoinCard'
 import LimitSelector from '@components/LimitSelector'
-import { useEffect, useState } from 'react'
-import type { Coin } from './types'
-
-type State = {
-  coins: Coin[]
-  pending: boolean
-  error: Error | null
-}
-
-const API_URL = import.meta.env.VITE_API_URL
+import { useCoins } from './hooks/useCoins'
 
 export default function App() {
-  const [{ coins, pending, error }, setState] = useState<State>({
-    coins: [],
-    pending: false,
-    error: null,
-  })
-  const [limit, setLimit] = useState(10)
-
-  useEffect(() => {
-    async function fetchCoin() {
-      setState((prevState) => ({ ...prevState, pending: true }))
-      try {
-        const response = await fetch(
-          `${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`
-        )
-        if (!response.ok) {
-          setState((prevState) => ({
-            ...prevState,
-            error: new Error(
-              `Failed to fetch: ${response.statusText}`
-            ),
-          }))
-          return
-        }
-        const data = (await response.json()) as Coin[]
-        setState((prevState) => ({
-          ...prevState,
-          coins: data,
-        }))
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setState((prevState) => ({
-            ...prevState,
-            error: new Error(
-              `Failed to fetch data! ${error.message}`
-            ),
-          }))
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            error: new Error('Unknown error occurred!'),
-          }))
-        }
-      } finally {
-        setState((prevState) => ({ ...prevState, pending: false }))
-      }
-    }
-
-    fetchCoin()
-  }, [limit])
+  const { coins, pending, error, limit, onLimitChange } = useCoins()
 
   return (
     <div>
       <Header />
       {pending && <pre>Loading...</pre>}
       {error && <pre className="error">{error.message}</pre>}
-      <LimitSelector limit={limit} onLimitChange={setLimit} />
+      <LimitSelector limit={limit} onLimitChange={onLimitChange} />
       {!pending && !error && (
         <main className="grid">
           {coins.map((coin) => {
