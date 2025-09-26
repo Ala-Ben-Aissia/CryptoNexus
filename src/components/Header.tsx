@@ -10,7 +10,7 @@ export default function Header() {
         height={48}
         width={48}
       />
-      <h1 style={{ marginBottom: 0 }}>Crypto Nexus</h1>
+      <h1 style={{ marginBottom: 0 }}>CryptoNexus</h1>
     </div>
   )
 }
