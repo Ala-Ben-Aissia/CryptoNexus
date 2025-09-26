@@ -272,3 +272,97 @@ a {
     opacity: 1;
   }
 }
+
+.skeleton-card {
+  background-color: #161b22;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+/* header layout matches .coin-header */
+.skeleton-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+/* shimmer style (shared by all skeleton blocks) */
+.skeleton-block {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    #161b22 0%,
+    #1c1f26 40%,
+    #23272d 60%,
+    #161b22 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+  display: block;
+}
+
+.skeleton-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    #161b22 0%,
+    #1c1f26 45%,
+    #23272d 55%,
+    #161b22 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+
+.skeleton-name {
+  width: 75%;
+  height: 2rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-symbol {
+  width: 25%;
+  height: 1.25rem;
+  border-radius: 8px;
+  opacity: 0.9;
+}
+
+.skeleton-price {
+  width: 50%;
+  height: 1.1rem;
+  border-radius: 8px;
+  margin-top: 0.4rem;
+}
+
+.skeleton-price-change {
+  width: 32%;
+  height: 1.1rem;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+}
+
+.skeleton-market-cap {
+  width: 100%;
+  height: 1.1rem;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+}
+
+/* shimmer keyframes */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

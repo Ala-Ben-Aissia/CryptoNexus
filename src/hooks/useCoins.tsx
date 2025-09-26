@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Coin, Order } from '../types'
+import { delay } from '../utils'
 
 type State = {
   coins: Coin[]
@@ -65,6 +66,7 @@ export function useCoins({
   useEffect(() => {
     async function fetchCoin() {
       setState((prevState) => ({ ...prevState, pending: true }))
+      await delay(2000)
       try {
         const response = await fetch(
           `${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`
@@ -81,6 +83,7 @@ export function useCoins({
         const data = (await response.json()) as Coin[]
         setState((prevState) => ({
           ...prevState,
+          pending: false,
           coins: data,
         }))
       } catch (error: unknown) {
