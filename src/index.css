@@ -8,7 +8,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #0e1117;
-  color: #f0f0f0;
+  color: #e5e5e5;
   line-height: 1.6;
   padding: 2rem;
 }
@@ -19,7 +19,7 @@ h1 {
 }
 
 a {
-  color: #fff;
+  color: #e5e5e5;
   text-decoration: none;
 }
 
@@ -116,7 +116,7 @@ a {
   border-radius: 8px;
   border: none;
   background: #1c1f26;
-  color: #fff;
+  color: #e5e5e5;
   font-size: 1rem;
 }
 

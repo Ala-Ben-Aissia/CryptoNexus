@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Header from '@components/Header'
 import CoinCard from '@components/CoinCard'
 import LimitSelector from '@components/LimitSelector'
 import FilterInput from '@components/FilterInput'
@@ -21,7 +20,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <Header />
       <div className="top-controls">
         <FilterInput filter={filter} onFilterChange={setFilter} />
         <LimitSelector limit={limit} onLimitChange={setLimit} />
