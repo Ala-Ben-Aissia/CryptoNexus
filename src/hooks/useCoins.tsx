@@ -1,20 +1,39 @@
 import { useEffect, useState } from 'react'
 import type { Coin } from '../types'
+
 type State = {
   coins: Coin[]
   pending: boolean
   error: Error | null
 }
 
+declare global {
+  interface ImportMetaEnv {
+    VITE_API_URL: string
+  }
+}
+
 const API_URL = import.meta.env.VITE_API_URL
 
-export function useCoins() {
+export function useCoins({
+  filter,
+  limit,
+}: {
+  filter: string
+  limit: number
+}) {
   const [state, setState] = useState<State>({
     coins: [],
     pending: false,
     error: null,
   })
-  const [limit, setLimit] = useState(10)
+
+  const filteredCoins = state.coins.filter((coin) => {
+    return (
+      coin.name.toLowerCase().includes(filter.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(filter.toLowerCase())
+    )
+  })
 
   useEffect(() => {
     async function fetchCoin() {
@@ -59,9 +78,5 @@ export function useCoins() {
     fetchCoin()
   }, [limit])
 
-  return {
-    ...state,
-    limit,
-    onLimitChange: setLimit,
-  }
+  return { ...state, coins: filteredCoins }
 }
