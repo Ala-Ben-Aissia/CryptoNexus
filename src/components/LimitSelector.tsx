@@ -1,12 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react'
+import type { Limit } from '../types'
 
-export default function LimitSelector({
-  limit,
-  onLimitChange,
-}: {
-  limit: number
-  onLimitChange: Dispatch<SetStateAction<number>>
-}) {
+const LimitSelector: React.FC<{
+  limit: Limit
+  onLimitChange: Dispatch<SetStateAction<Limit>>
+}> = ({ limit, onLimitChange }) => {
   return (
     <div className="controls">
       <label htmlFor="limit">Show:</label>
@@ -15,7 +13,7 @@ export default function LimitSelector({
         id="limit"
         value={limit}
         onChange={(e) => {
-          onLimitChange(+e.currentTarget.value)
+          onLimitChange(+e.currentTarget.value as Limit)
         }}
       >
         <option value="5">5</option>
@@ -27,3 +25,5 @@ export default function LimitSelector({
     </div>
   )
 }
+
+export default LimitSelector

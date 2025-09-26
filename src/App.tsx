@@ -4,21 +4,29 @@ import CoinCard from '@components/CoinCard'
 import LimitSelector from '@components/LimitSelector'
 import FilterInput from '@components/FilterInput'
 import { useCoins } from './hooks/useCoins'
+import type { Order, Limit, Filter } from './types'
+import SortSelector from '@components/SortSelector'
 
 export default function App() {
-  const [limit, setLimit] = useState(10)
-  const [filter, setFilter] = useState('')
+  const [limit, setLimit] = useState<Limit>(10)
+  const [filter, setFilter] = useState<Filter>('')
+  const [sortBy, setSortBy] = useState<Order>('market_cap_desc')
 
-  const { coins, pending, error } = useCoins({ filter, limit })
+  const { coins, pending, error } = useCoins({
+    filter,
+    limit,
+    sortBy,
+  })
 
   return (
     <div>
       <Header />
       {pending && <pre>Loading...</pre>}
       {error && <pre className="error">{error.message}</pre>}
-      <div className="top-control">
+      <div className="top-controls">
         <FilterInput filter={filter} onFilterChange={setFilter} />
         <LimitSelector limit={limit} onLimitChange={setLimit} />
+        <SortSelector sortBy={sortBy} onSortChange={setSortBy} />
       </div>
       {!pending && !error && (
         <main className="grid">

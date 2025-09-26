@@ -1,11 +1,12 @@
 import type { Dispatch, SetStateAction } from 'react'
+import type { Filter } from '../types'
 
 export default function FilterInput({
   filter,
   onFilterChange,
 }: {
-  filter: string
-  onFilterChange: Dispatch<SetStateAction<string>>
+  filter: Filter
+  onFilterChange: Dispatch<SetStateAction<Filter>>
 }) {
   return (
     <div className="filter">
@@ -15,7 +16,7 @@ export default function FilterInput({
         value={filter}
         placeholder="Filter coins by name or symbol"
         onChange={(e) => {
-          onFilterChange(e.currentTarget.value)
+          onFilterChange(e.currentTarget.value as typeof filter)
         }}
       />
     </div>
