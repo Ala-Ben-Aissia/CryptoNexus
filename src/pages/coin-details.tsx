@@ -11,6 +11,14 @@ export default function CoinDetailsPage() {
     return <CoinDetailsSkeleton />
   }
 
+  if (error) {
+    return (
+      <pre className="error" style={{ color: 'red' }}>
+        {error.message}
+      </pre>
+    )
+  }
+
   return (
     <div className="coin-details-container">
       <Link to="/">← Go Back Home</Link>
@@ -94,11 +102,6 @@ export default function CoinDetailsPage() {
           </div>
         </>
       ) : null}
-      {error && (
-        <pre className="error" style={{ color: 'red' }}>
-          {error.message}
-        </pre>
-      )}
     </div>
   )
 }

@@ -32,19 +32,12 @@ type APIData = {
 
 type Data = ChartData<'line', { x: number; y: number }[]>
 
-type State =
-  | ['loading', undefined]
-  | ['error', Error]
-  | ['success', Data]
+type State = ['loading', undefined] | ['error', Error] | ['success', Data]
 
 const API_URL = import.meta.env.VITE_COIN_API_URL
 
 export default function CoinChart({ coinId }: { coinId: string }) {
   const [state, setState] = useState<State>(['loading', undefined])
-
-  useEffect(() => {
-    console.log(state)
-  }, [state])
 
   useEffect(() => {
     async function fetchPrices() {
@@ -109,8 +102,7 @@ export default function CoinChart({ coinId }: { coinId: string }) {
                 },
                 y: {
                   ticks: {
-                    callback: (tickValue) =>
-                      `$${tickValue.toLocaleString()}`,
+                    callback: (tickValue) => `$${tickValue.toLocaleString()}`,
                   },
                 },
               },

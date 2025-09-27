@@ -25,9 +25,7 @@ export default function useCoin({ id: coinId }: { id: string }) {
         if (!response.ok) {
           setState((prevState) => ({
             ...prevState,
-            error: new Error(
-              `Failed to fetch: ${response.statusText}`
-            ),
+            error: new Error(`Failed to fetch: ${response.statusText}`),
           }))
         }
         const data = (await response.json()) as Coin
@@ -37,11 +35,12 @@ export default function useCoin({ id: coinId }: { id: string }) {
           coin: data,
         }))
       } catch (error: unknown) {
-        if (error instanceof Error) {
+        if (error instanceof TypeError) {
+          console.log({ error })
           setState((prevState) => ({
             ...prevState,
             error: new Error(
-              `Failed to fetch data! ${error.message}`
+              "You've reached the request limit. Please wait about 30-60 seconds before trying again."
             ),
           }))
         } else {
