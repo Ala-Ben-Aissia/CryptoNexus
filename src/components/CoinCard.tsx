@@ -8,7 +8,7 @@ export default function CoinCard({ coin }: { coin: Coin }) {
         <div className="coin-header">
           <img
             className="coin-image"
-            src={coin.image}
+            src={coin.image as string}
             alt={coin.name}
           />
           <div>
@@ -19,9 +19,7 @@ export default function CoinCard({ coin }: { coin: Coin }) {
         <p>Price: ${coin.current_price.toLocaleString()}</p>
         <p
           className={
-            coin.price_change_percentage_24h >= 0
-              ? 'positive'
-              : 'negative'
+            coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'
           }
         >
           {coin.price_change_percentage_24h} %

@@ -21,7 +21,7 @@ export default function CoinDetailsPage() {
       {coin ? (
         <>
           <img
-            src={coin.image.large}
+            src={typeof coin.image === 'object' ? coin.image.large : coin.image}
             alt={coin.id}
             className="coin-details-image"
           />
@@ -33,47 +33,31 @@ export default function CoinDetailsPage() {
               {coin.market_data.current_price.usd.toLocaleString()}
             </h3>
             <h4>
-              Market Cap: $
-              {coin.market_data.market_cap.usd.toLocaleString()}
+              Market Cap: ${coin.market_data.market_cap.usd.toLocaleString()}
             </h4>
+            <h4>24h High: ${coin.market_data.high_24h.usd.toLocaleString()}</h4>
+            <h4>24h Low: ${coin.market_data.low_24h.usd.toLocaleString()}</h4>
             <h4>
-              24h High: $
-              {coin.market_data.high_24h.usd.toLocaleString()}
-            </h4>
-            <h4>
-              24h Low: $
-              {coin.market_data.low_24h.usd.toLocaleString()}
-            </h4>
-            <h4>
-              24h Price Change: $
-              {coin.market_data.price_change_24h.toFixed(2)} (
-              {coin.market_data.price_change_percentage_24h} %)
+              24h Price Change: ${coin.market_data.price_change_24h.toFixed(2)}{' '}
+              ({coin.market_data.price_change_percentage_24h} %)
             </h4>
             <h4>
               Ciculating Supply:{' '}
               {coin.market_data.circulating_supply.toLocaleString()}
             </h4>
             <h4>
-              Total Supply:{' '}
-              {coin.market_data.total_supply.toLocaleString()}
+              Total Supply: {coin.market_data.total_supply.toLocaleString()}
             </h4>
             <h4>
-              All-Time-High: $
-              {coin.market_data.ath.usd.toLocaleString()} on{' '}
-              {new Date(
-                coin.market_data.ath_date.usd
-              ).toLocaleDateString()}
+              All-Time-High: ${coin.market_data.ath.usd.toLocaleString()} on{' '}
+              {new Date(coin.market_data.ath_date.usd).toLocaleDateString()}
             </h4>
             <h4>
-              All-Time-Low: $
-              {coin.market_data.atl.usd.toLocaleString()} on{' '}
-              {new Date(
-                coin.market_data.atl_date.usd
-              ).toLocaleDateString()}
+              All-Time-Low: ${coin.market_data.atl.usd.toLocaleString()} on{' '}
+              {new Date(coin.market_data.atl_date.usd).toLocaleDateString()}
             </h4>
             <h4>
-              Last updated:{' '}
-              {new Date(coin.last_updated).toLocaleString('en')}
+              Last updated: {new Date(coin.last_updated).toLocaleString('en')}
             </h4>
           </div>
           <CoinChart coinId={coin.id} />

@@ -21,11 +21,13 @@ export type Coin = {
     fr: string
     sp: string
   }
-  image: {
-    large: string
-    small: string
-    thumb: string
-  }
+  image:
+    | {
+        large: string
+        small: string
+        thumb: string
+      }
+    | string
   current_price: number
   price_change_percentage_24h: number
   market_cap: number
