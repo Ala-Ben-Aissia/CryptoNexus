@@ -1,0 +1,83 @@
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+  TimeScale,
+  type ChartData,
+} from 'chart.js'
+import 'chartjs-adapter-date-fns'
+import { useEffect, useState } from 'react'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+  TimeScale
+)
+
+type APIData = {
+  prices: [number, number][]
+}
+
+type Data = ChartData<'line', { x: number; y: number }[]>
+
+type State =
+  | ['loading', undefined]
+  | ['error', Error]
+  | ['success', Data]
+
+const API_URL = import.meta.env.VITE_COIN_API_URL
+
+export default function CoinChart({ coinId }: { coinId: string }) {
+  const [state, setState] = useState<State>(['loading', undefined])
+
+  useEffect(() => {
+    console.log(state)
+  }, [state])
+
+  useEffect(() => {
+    async function fetchPrices() {
+      try {
+        const response = await fetch(
+          `${API_URL}/${coinId}/market_chart?vs_currency=usd&days=7`
+        )
+        if (!response.ok) {
+          setState([
+            'error',
+            new Error(`Failed to fetch: ${response.statusText}`),
+          ])
+        }
+        const data = (await response.json()) as APIData
+        const prices = data.prices.map((p) => ({ x: p[0], y: p[1] }))
+        setState([
+          'success',
+          {
+            datasets: [
+              {
+                label: 'Price (USD)',
+                data: prices,
+                fill: true,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                pointRadius: 0,
+                tension: 0.3,
+              },
+            ],
+          },
+        ])
+      } catch (error) {
+        setState(['error', new Error('Unknown error occurred!')])
+      }
+    }
+
+    fetchPrices()
+  }, [])
+  return <h1>Chart</h1>
+}

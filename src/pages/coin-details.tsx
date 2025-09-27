@@ -1,6 +1,8 @@
 import { Link, useParams } from 'react-router'
 import useCoin from '../hooks/useCoin'
 import CoinDetailsSkeleton from '@components/CoinDetailsSkeleton'
+import CoinCard from '@components/CoinCard'
+import CoinChart from '@components/CoinChart'
 
 export default function CoinDetailsPage() {
   const { id } = useParams()
@@ -75,6 +77,7 @@ export default function CoinDetailsPage() {
               {new Date(coin.last_updated).toLocaleString('en')}
             </h4>
           </div>
+          <CoinChart coinId={coin.id} />
           <div className="coin-details-links">
             {coin.links.homepage[0] && (
               <p>

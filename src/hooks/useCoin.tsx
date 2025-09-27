@@ -7,12 +7,6 @@ type State = {
   error: Error | null
 }
 
-declare global {
-  interface ImportMetaEnv {
-    VITE_COIN_API_URL: string
-  }
-}
-
 const API_URL = import.meta.env.VITE_COIN_API_URL
 
 export default function useCoin({ id: coinId }: { id: string }) {
