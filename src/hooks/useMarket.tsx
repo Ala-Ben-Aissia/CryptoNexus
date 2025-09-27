@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Coin, Order } from '../types'
+import { fetchData } from '../utils'
 
 type State = {
   coins: Coin[]
@@ -60,7 +61,7 @@ export default function useMarket({
     async function fetchCoins() {
       setState((prevState) => ({ ...prevState, pending: true }))
       try {
-        const response = await fetch(
+        const response = await fetchData(
           `${API_URL}&order=market_cap_desc&per_page=${limit}&page=1&sparkline=false`
         )
         if (!response.ok) {

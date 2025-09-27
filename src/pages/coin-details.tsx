@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router'
 import useCoin from '../hooks/useCoin'
 import CoinDetailsSkeleton from '@components/CoinDetailsSkeleton'
-import CoinCard from '@components/CoinCard'
 import CoinChart from '@components/CoinChart'
 
 export default function CoinDetailsPage() {

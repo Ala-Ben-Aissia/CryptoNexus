@@ -26,7 +26,9 @@ export default function HomePage() {
         <SortSelector sortBy={sortBy} onSortChange={setSortBy} />
       </div>
       <main className="grid">
-        {pending ? (
+        {error ? (
+          <pre className="error">{error.message}</pre>
+        ) : pending ? (
           Array.from({ length: limit }).map((_, index) => (
             <CoinCardSkeleton key={index} />
           ))
@@ -38,7 +40,6 @@ export default function HomePage() {
           <p>No matching coins</p>
         )}
       </main>
-      {error && <pre className="error">{error.message}</pre>}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Coin } from '../types'
+import { fetchData } from '../utils'
 
 type State = {
   coin: Coin | undefined
@@ -20,7 +21,7 @@ export default function useCoin({ id: coinId }: { id: string }) {
     async function fetchCoin() {
       setState((prevState) => ({ ...prevState, pending: true }))
       try {
-        const response = await fetch(`${API_URL}/${coinId}`)
+        const response = await fetchData(`${API_URL}/${coinId}`)
         if (!response.ok) {
           setState((prevState) => ({
             ...prevState,

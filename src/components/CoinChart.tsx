@@ -7,12 +7,16 @@ import {
   Tooltip,
   Legend,
   TimeScale,
+  Filler,
   type ChartData,
 } from 'chart.js'
+import { Line } from 'react-chartjs-2'
 import 'chartjs-adapter-date-fns'
 import { useEffect, useState } from 'react'
+import { fetchData } from '../utils'
 
 ChartJS.register(
+  Filler,
   CategoryScale,
   LinearScale,
   LineElement,
@@ -45,7 +49,7 @@ export default function CoinChart({ coinId }: { coinId: string }) {
   useEffect(() => {
     async function fetchPrices() {
       try {
-        const response = await fetch(
+        const response = await fetchData(
           `${API_URL}/${coinId}/market_chart?vs_currency=usd&days=7`
         )
         if (!response.ok) {
@@ -79,5 +83,40 @@ export default function CoinChart({ coinId }: { coinId: string }) {
 
     fetchPrices()
   }, [])
-  return <h1>Chart</h1>
+
+  const [status, data] = state
+  switch (status) {
+    case 'loading':
+      return 'Loading...'
+    case 'error':
+      throw data
+    case 'success':
+      return (
+        <div style={{ marginTop: '30px' }}>
+          <Line
+            data={state[1]}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false },
+              },
+              scales: {
+                x: {
+                  type: 'time',
+                  time: { unit: 'day' },
+                  ticks: { autoSkip: true, maxTicksLimit: 7 },
+                },
+                y: {
+                  ticks: {
+                    callback: (tickValue) =>
+                      `$${tickValue.toLocaleString()}`,
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+      )
+  }
 }

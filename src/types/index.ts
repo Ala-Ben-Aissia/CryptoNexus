@@ -2,6 +2,7 @@ declare global {
   interface ImportMetaEnv {
     VITE_MARKET_API_URL: string
     VITE_COIN_API_URL: string
+    VITE_API_KEY: string
   }
 }
 
