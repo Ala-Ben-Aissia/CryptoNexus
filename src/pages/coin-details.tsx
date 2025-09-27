@@ -1,22 +1,23 @@
 import { Link, useParams } from 'react-router'
 import useCoin from '../hooks/useCoin'
+import CoinDetailsSkeleton from '@components/CoinDetailsSkeleton'
 
 export default function CoinDetailsPage() {
   const { id } = useParams()
   const { coin, pending, error } = useCoin({ id: id! })
+
+  if (pending) {
+    return <CoinDetailsSkeleton />
+  }
 
   return (
     <div className="coin-details-container">
       <Link to="/">← Go Back Home</Link>
 
       <h1 className="coin-details-title">
-        {coin
-          ? `${coin.name} (${coin.symbol.toUpperCase()})`
-          : 'XXXXXX (XXX)'}
+        {coin && `${coin.name} (${coin.symbol.toUpperCase()})`}
       </h1>
-      {pending ? (
-        <pre>Loading...</pre>
-      ) : coin ? (
+      {coin ? (
         <>
           <img
             src={coin.image.large}
@@ -100,11 +101,10 @@ export default function CoinDetailsPage() {
               </p>
             )}
             {coin.categories.length > 0 && (
-              <p>
+              <p className="categories">
                 <b>Catergories:</b> {coin.categories.join(', ')}
               </p>
             )}
-            {}
           </div>
         </>
       ) : null}

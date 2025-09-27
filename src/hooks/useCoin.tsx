@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import type { Coin } from '../types'
-import { delay } from '../utils'
 
 type State = {
   coin: Coin | undefined
@@ -22,10 +21,6 @@ export default function useCoin({ id: coinId }: { id: string }) {
     pending: false,
     error: null,
   })
-
-  useEffect(() => {
-    console.log(state)
-  }, [state])
 
   useEffect(() => {
     async function fetchCoin() {
