@@ -36,7 +36,6 @@ export default function useCoin({ id: coinId }: { id: string }) {
         }))
       } catch (error: unknown) {
         if (error instanceof TypeError) {
-          console.log({ error })
           setState((prevState) => ({
             ...prevState,
             error: new Error(
