@@ -41,7 +41,7 @@ The application uses the following environment variables:
 
 ## Contributing
 
-Contributions are welcome! Please see the [contribution guidelines](CONTRIBUTING.md) for details.
+Contributions are welcome! Please see the <a href="https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors">Contribution Guidelines</a> for details.
 
 ## License
 
