@@ -7,14 +7,16 @@ import CoinDetailsPage from './pages/coin-details'
 
 export default function App() {
   return (
-    <>
+    <div className="app-container">
       <Header />
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="coin/:id" element={<CoinDetailsPage />} />
-        <Route path="*" element={<Notfound />} />
-      </Routes>
-    </>
+      <main>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="coin/:id" element={<CoinDetailsPage />} />
+          <Route path="*" element={<Notfound />} />
+        </Routes>
+      </main>
+    </div>
   )
 }

@@ -57,10 +57,7 @@ export default function CoinDetailsSkeleton() {
       </div>
 
       {/* External links */}
-      <div
-        className="coin-details-links"
-        style={{ marginTop: '30px' }}
-      >
+      <div className="coin-details-links" style={{ marginTop: '30px' }}>
         <div
           className="skeleton-block"
           style={{

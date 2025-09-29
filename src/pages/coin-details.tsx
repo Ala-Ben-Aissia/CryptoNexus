@@ -33,7 +33,9 @@ export default function CoinDetailsPage() {
             alt={coin.id}
             className="coin-details-image"
           />
-          <p>{coin.description.en.split('. ')[0]}</p>
+          <p className="coin-details-description">
+            {coin.description.en.split('. ')[0]}
+          </p>
           <div className="coin-details-info">
             <h3>Rank: #{coin.market_cap_rank}</h3>
             <h3>
@@ -96,7 +98,7 @@ export default function CoinDetailsPage() {
             )}
             {coin.categories.length > 0 && (
               <p className="categories">
-                <b>Catergories:</b> {coin.categories.join(', ')}
+                <b>Categories:</b> {coin.categories.join(', ')}
               </p>
             )}
           </div>

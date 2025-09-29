@@ -12,19 +12,23 @@ export default function CoinCard({ coin }: { coin: Coin }) {
             alt={coin.name}
           />
           <div>
-            <h2>{coin.name}</h2>
+            <h2 className="coin-name">{coin.name}</h2>
             <p className="symbol">{coin.symbol.toUpperCase()}</p>
           </div>
         </div>
-        <p>Price: ${coin.current_price.toLocaleString()}</p>
+        <p className="coin-price mb-1">
+          ${coin.current_price.toLocaleString()}
+        </p>
         <p
           className={
             coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'
           }
         >
-          {coin.price_change_percentage_24h} %
+          {coin.price_change_percentage_24h.toFixed(2)}%
         </p>
-        <p>Market Cap: ${coin.market_cap.toLocaleString()}</p>
+        <p className="market-cap text-muted">
+          MCap: ${coin.market_cap.toLocaleString()}
+        </p>
       </div>
     </Link>
   )

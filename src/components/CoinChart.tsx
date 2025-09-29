@@ -65,6 +65,12 @@ export default function CoinChart({ coinId }: { coinId: string }) {
                 backgroundColor: 'rgba(0, 123, 255, 0.1)',
                 pointRadius: 0,
                 tension: 0.3,
+                borderWidth: (ctx) => {
+                  const chartWidth = ctx.chart.width
+                  if (chartWidth < 400) return 1
+                  if (chartWidth < 800) return 2
+                  return 3
+                },
               },
             ],
           },

@@ -8,6 +8,9 @@ export function fetchData(
 ): Promise<Response> {
   return fetch(input, {
     ...init,
-    headers: { 'x-cg-demo-api-key': import.meta.env.VITE_API_KEY },
+    headers: {
+      'x-cg-demo-api-key': import.meta.env.VITE_API_KEY,
+      'Access-Control-Allow-Origin': '*',
+    },
   })
 }

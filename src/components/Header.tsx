@@ -1,37 +1,43 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 
 export default function Header() {
-  return (
-    <header
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '2rem',
-        padding: '0 1rem',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-        }}
-      >
-        <img
-          style={{ width: '48px', height: '48px' }}
-          src="/cryptos.webp"
-          alt="crypto logo"
-        />
-        <h1 style={{ margin: 0 }}>
-          <Link to="/">CryptoNexus</Link>
-        </h1>
-      </div>
+  const [isOpen, setIsOpen] = useState(false)
 
-      <nav style={{ display: 'flex', gap: '1rem' }}>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-      </nav>
+  return (
+    <header>
+      <div className="header-container">
+        <div className="logo-container">
+          <img src="/cryptos.webp" alt="crypto logo" className="logo-image" />
+          <h1>
+            <Link to="/">CryptoNexus</Link>
+          </h1>
+        </div>
+
+        <nav className="desktop-nav">
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+        </nav>
+
+        <button
+          className="burger"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div className={`mobile-menu ${isOpen ? 'active' : ''}`}>
+          <Link to="/" onClick={() => setIsOpen(false)}>
+            Home
+          </Link>
+          <Link to="/about" onClick={() => setIsOpen(false)}>
+            About
+          </Link>
+        </div>
+      </div>
     </header>
   )
 }
